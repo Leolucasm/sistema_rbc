@@ -2,8 +2,7 @@ package sistemarbcks;
 
 import java.util.Date;
 
-public class Projeto {
-
+public class Projeto {        
     private int id;
     private String nome;
     private String categoria;
@@ -254,5 +253,9 @@ public class Projeto {
     public void setPais(String pais) {
         this.pais = pais;
     }
+    
+    public long getDiferencaDias(){
+        return (this.getFim_projeto().getTime() - this.getInicio_projeto().getTime()) / (1000 * 60 * 60 * 24);
+    }    
 
 }

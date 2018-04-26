@@ -107,16 +107,17 @@ public class SistemaRBC_KS {
     private double calculaObjetivo() {
         int valorAtributoProjeto1 = getValorObjetivo(projeto1.getObjetivo());
         int valorAtributoProjeto2 = getValorObjetivo(projeto2.getObjetivo());
-        return Math.abs(((valorAtributoProjeto1 - valorAtributoProjeto2) / VALOR_MAXIMO_OBJETIVO) - 1);        
+        
+        return Math.abs((1 - (valorAtributoProjeto2 - valorAtributoProjeto1)) / VALOR_MAXIMO_OBJETIVO);        
+        //return Math.abs(((valorAtributoProjeto1 - valorAtributoProjeto2) / VALOR_MAXIMO_OBJETIVO) - 1);        
     }
 
-    private double calculaQuantidadeDias() {
-        long diferencaDiasProjeto1 = (projeto1.getFim_projeto().getTime() - projeto1.getInicio_projeto().getTime()) / (1000 * 60 * 60 * 24);
-        long diferencaDiasProjeto2 = (projeto2.getFim_projeto().getTime() - projeto2.getInicio_projeto().getTime()) / (1000 * 60 * 60 * 24);
-        int valorAtributoProjeto1 = getValorQuantidadeDias(diferencaDiasProjeto1);
-        int valorAtributoProjeto2 = getValorQuantidadeDias(diferencaDiasProjeto2);
+    private double calculaQuantidadeDias() {        
+        int valorAtributoProjeto1 = getValorQuantidadeDias(projeto1.getDiferencaDias());
+        int valorAtributoProjeto2 = getValorQuantidadeDias(projeto2.getDiferencaDias());
 
-        return Math.abs(((valorAtributoProjeto1 - valorAtributoProjeto2) / VALOR_MAXIMO_QUANTIDADE_DIAS) - 1);        
+        return Math.abs((1 - (valorAtributoProjeto2 - valorAtributoProjeto1)) / VALOR_MAXIMO_QUANTIDADE_DIAS);        
+        //return Math.abs(((valorAtributoProjeto1 - valorAtributoProjeto2) / VALOR_MAXIMO_QUANTIDADE_DIAS) - 1);        
     }
 
     private int getValorQuantidadeDias(long quantidade_dias) {

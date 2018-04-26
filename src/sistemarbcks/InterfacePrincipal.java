@@ -43,18 +43,52 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         }                
     }
     
-    private void getAtributosProjeto(){
-        String sigla_moeda = gerenciador.getSiglaMoeda(jComboMoeda.getItemAt(jComboMoeda.getSelectedIndex()));
-        String sigla_pais = gerenciador.getSiglaPais((String) jComboPais.getSelectedItem());
-        String valor = jTextObjetivo.getText();
+    private double getValorDouble(String valor){
+        String valor_convertido = valor;
         
         //Variável utilizada para converter string em double
-        valor = valor.replace(".", "");
-        valor = valor.replace(",", ".");
+        valor_convertido = valor.replace(".", "");
+        valor_convertido = valor_convertido.replace(",", ".");
+        
+        return Double.parseDouble(valor_convertido);
+    }
+    
+    private boolean valida_campos(){
+        
+        if(jTextNomeProjeto.getText().equals("")){
+            return false;
+        }                
+        
+        try{
+            
+            if(getValorDouble(jTextObjetivo.getText()) <= 0){
+                return false;
+            }
+            
+            Date data_inicial = (Date) jTextDataInicio.getValue();
+            Date data_final = (Date) jTextDataFim.getValue();
+            
+            long diferencaDias = (data_final.getTime() - data_inicial.getTime()) / (1000 * 60 * 60 * 24);
+            if(diferencaDias < 0){
+                return false;
+            }
+            
+        } catch (Exception e){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    
+    private void getAtributosProjeto(){
+        String sigla_moeda = gerenciador.getSiglaMoeda(jComboMoeda.getItemAt(jComboMoeda.getSelectedIndex()));
+        String sigla_pais = gerenciador.getSiglaPais((String) jComboPais.getSelectedItem());                
         
         novoProjeto.setNome(jTextNomeProjeto.getText());
         novoProjeto.setCategoria(jComboCategoria.getItemAt(jComboCategoria.getSelectedIndex()));
-        novoProjeto.setObjetivo(Double.parseDouble(valor));
+        novoProjeto.setObjetivo(getValorDouble(jTextObjetivo.getText()));
         novoProjeto.setInicio_projeto((Date) jTextDataInicio.getValue());
         novoProjeto.setFim_projeto((Date) jTextDataFim.getValue());
         novoProjeto.setMoeda(sigla_moeda);
@@ -100,11 +134,6 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         jLabel3.setText("Categoria");
 
         jComboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboCategoriaActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText("Data Início");
 
@@ -117,20 +146,10 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         jLabel5.setText("Moeda");
 
         jComboMoeda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboMoeda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboMoedaActionPerformed(evt);
-            }
-        });
 
         jLabel6.setText("País");
 
         jComboPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboPais.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboPaisActionPerformed(evt);
-            }
-        });
 
         jTextObjetivo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
 
@@ -204,7 +223,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -215,23 +234,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                 jButtonCompararActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(184, Short.MAX_VALUE)
-                .addComponent(jButtonComparar)
-                .addGap(102, 102, 102))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(jButtonComparar)
-                .addContainerGap())
-        );
+        jPanel2.add(jButtonComparar);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.SOUTH);
 
@@ -240,35 +243,54 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompararActionPerformed
-        SistemaRBC_KS rbc_KS = new SistemaRBC_KS();
-        ArrayList<Projeto> todosProjetos = gerenciador.selectTodosProjetos();
-        Object tabelaSimilaridade[][] = new Object[todosProjetos.size()][2];
-        String[] colunas = {"Nome do Projeto", "Similaridade com " + novoProjeto.getNome()};
-        getAtributosProjeto();                
-        
-        for (int i  = 0; i < todosProjetos.size(); i++){
-            tabelaSimilaridade[i][0] = todosProjetos.get(i).getNome();
-            tabelaSimilaridade[i][1] = rbc_KS.calculaSimilaridadeFilmes(novoProjeto, todosProjetos.get(i));
+        if(valida_campos()){        
+            SistemaRBC_KS rbc_KS = new SistemaRBC_KS();
+            ArrayList<Projeto> todosProjetos = gerenciador.selectTodosProjetos();
+            Object tabelaSimilaridade[][] = new Object[todosProjetos.size()][2];
+            String[] colunas = {"Nome do Projeto", "Valor Arrecadado (USD)", "Apoiadores", 
+                "Status", "Categoria", "Tempo (Dias)", "Moeda", "País", 
+                "Objetivo (USD)", "Similaridade com " + novoProjeto.getNome()};
+            getAtributosProjeto();                
+            
+            /* 
+            nome       
+            usb_valor_arrecadado
+            apoiadores
+            status
+
+            categoria
+            diferença de dias
+            moeda
+            pais
+            usd_objetivo       
+         */
+            int i=0;            
+            for (Projeto projeto:todosProjetos) {
+                tabelaSimilaridade[i][0] = projeto.getNome();
+                tabelaSimilaridade[i][1] = projeto.getUsd_valor_arrecadado();
+                tabelaSimilaridade[i][2] = projeto.getApoiadores();
+                tabelaSimilaridade[i][3] = projeto.getStatus();
+                tabelaSimilaridade[i][4] = projeto.getCategoria();
+                tabelaSimilaridade[i][5] = projeto.getDiferencaDias();
+                tabelaSimilaridade[i][6] = gerenciador.getNomeMoeda(projeto.getMoeda());
+                tabelaSimilaridade[i][7] = gerenciador.getNomePais(projeto.getPais());
+                tabelaSimilaridade[i][8] = projeto.getUsd_objetivo();
+                tabelaSimilaridade[i][9] = rbc_KS.calculaSimilaridadeFilmes(novoProjeto, projeto);                
+                i++;
+            }                        
+            
+            /*for (int i  = 0; i < todosProjetos.size(); i++){
+                tabelaSimilaridade[i][0] = todosProjetos.get(i).getNome();
+                tabelaSimilaridade[i][1] = rbc_KS.calculaSimilaridadeFilmes(novoProjeto, todosProjetos.get(i));
+            }*/
+
+            DefaultTableModel tabela  = new DefaultTableModel(tabelaSimilaridade, colunas);
+
+            TabelaSimilaridades similaridades = new TabelaSimilaridades();
+            similaridades.setTabela(tabela);
+            similaridades.setVisible(true);        
         }
-        
-        DefaultTableModel tabela  = new DefaultTableModel(tabelaSimilaridade, colunas);
-        
-        TabelaSimilaridades similaridades = new TabelaSimilaridades();
-        similaridades.setTabela(tabela);
-        similaridades.setVisible(true);        
     }//GEN-LAST:event_jButtonCompararActionPerformed
-
-    private void jComboPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPaisActionPerformed
-
-    }//GEN-LAST:event_jComboPaisActionPerformed
-
-    private void jComboMoedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboMoedaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboMoedaActionPerformed
-
-    private void jComboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
