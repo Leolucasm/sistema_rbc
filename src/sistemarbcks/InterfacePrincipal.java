@@ -3,6 +3,7 @@ package sistemarbcks;
 import gerenciadordebancodedados.Gerenciador;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sistema_RBC.SistemaRBC_KS;
 
@@ -245,25 +246,13 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private void jButtonCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompararActionPerformed
         if(valida_campos()){        
             SistemaRBC_KS rbc_KS = new SistemaRBC_KS();
-            ArrayList<Projeto> todosProjetos = gerenciador.selectTodosProjetos();
+            ArrayList<Projeto> todosProjetos = gerenciador.getProjetos();
             Object tabelaSimilaridade[][] = new Object[todosProjetos.size()][2];
             String[] colunas = {"Nome do Projeto", "Valor Arrecadado (USD)", "Apoiadores", 
                 "Status", "Categoria", "Tempo (Dias)", "Moeda", "País", 
                 "Objetivo (USD)", "Similaridade com " + novoProjeto.getNome()};
             getAtributosProjeto();                
-            
-            /* 
-            nome       
-            usb_valor_arrecadado
-            apoiadores
-            status
-
-            categoria
-            diferença de dias
-            moeda
-            pais
-            usd_objetivo       
-         */
+                       
             int i=0;            
             for (Projeto projeto:todosProjetos) {
                 tabelaSimilaridade[i][0] = projeto.getNome();
@@ -289,6 +278,8 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             TabelaSimilaridades similaridades = new TabelaSimilaridades();
             similaridades.setTabela(tabela);
             similaridades.setVisible(true);        
+        } else {
+            JOptionPane.showMessageDialog(this, "Os campos devem estar preenchidos corretamente. \n Por favor verifique!", "Campos Inválidos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonCompararActionPerformed
 

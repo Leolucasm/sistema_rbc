@@ -14,7 +14,7 @@ import sistemarbcks.Pais;
 import sistemarbcks.Projeto;
 
 public class Gerenciador {
-    public final String url = "jdbc:postgresql://localhost:5432/RBC_Projetos";  
+    public final String url = "jdbc:postgresql://localhost:5432/rbc_projetos";  
     public final String usuario = "postgres";  
     public final String senha = "12345";
 	
@@ -62,40 +62,10 @@ public class Gerenciador {
         } catch (Exception e) {  
              e.printStackTrace();  
         }
-    }
+    }               
     
-    public boolean insertNovoProjeto(Projeto projeto){
-        String comandoInsereFilme = "";
-        String comandoInsereGeneros = "";
-        int idFilme = 0;                
-        
-        return true;
-        
-    }        
-    
-    public int selectID(String tabela, String atributo, String valor){
-        int id = 0;
-        
-        conexao();
-        try {
-            rs = stm.executeQuery("select id from " + tabela + " where " + atributo + " = '" + valor + "'");
-        } catch (SQLException ex) {
-            Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            rs.next();
-            id = rs.getInt("id");
-        } catch (SQLException ex) {
-            Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return id;
-    }                      
-    
-    public ArrayList<Projeto> selectTodosProjetos(){
-        
-        ArrayList<Projeto> projetos =  new ArrayList<Projeto>();
-        
-        Projeto aux = new Projeto();
+    public ArrayList<Projeto> getProjetos(){        
+        ArrayList<Projeto> projetos =  new ArrayList<Projeto>();                
         
         conexao();
 		
@@ -107,7 +77,24 @@ public class Gerenciador {
                 
         try {
             while(rs.next()){
+                Projeto projeto = new Projeto();
                 
+                /*projeto.setId(0);
+                projeto.setNome("");
+                projeto.setCategoria("");
+                projeto.setMoeda("");
+                projeto.setInicio_projeto(inicio_projeto);
+                projeto.setFim_projeto(fim_projeto);
+                projeto.setObjetivo(0);
+                projeto.setValor_arrecadado(0);
+                projeto.setUsd_objetivo(0);
+                projeto.setUsd_valor_arrecadado(0);
+                projeto.setStatus("");
+                projeto.setApoiadores(0);
+                projeto.setPais("");                
+                
+                projetos.add(projeto);
+                */
                 /* ADICIONAR PROJETOS
                 projetos.add(new Projeto(
                         rs.getString("titulo"), 
