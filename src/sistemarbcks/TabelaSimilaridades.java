@@ -1,6 +1,11 @@
 package sistemarbcks;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Comparator;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class TabelaSimilaridades extends javax.swing.JFrame {
 
@@ -14,8 +19,31 @@ public class TabelaSimilaridades extends javax.swing.JFrame {
     
     public void setTabela(DefaultTableModel tabela){
         jTable1.setModel(tabela);
-        jTable1.setAutoCreateRowSorter(true);
+        
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable1.getModel());
+        sorter.setComparator(9, comparator);        
+        jTable1.setRowSorter(sorter);        
     }
+    
+    private Double formatoDouble (String valor) throws ParseException {
+        Double resultado;
+        resultado = NumberFormat.getInstance().parse(valor).doubleValue();
+        return resultado;
+    }
+    
+    Comparator<String> comparator = new Comparator<String>() {
+    public int compare(String s1, String s2) {
+        Double valor1 = null;
+        Double valor2 = null;
+        try {
+            valor1 = formatoDouble(s1);
+            valor2 = formatoDouble(s2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return valor1.compareTo(valor2);
+    }
+    };
     
             /**
      * This method is called from within the constructor to initialize the form.

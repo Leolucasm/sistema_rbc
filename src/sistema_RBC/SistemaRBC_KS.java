@@ -5,13 +5,13 @@ import sistemarbcks.Projeto;
 public class SistemaRBC_KS {
 
     static final double PESO_CATEGORIA = 1.0;
-    static final double PESO_OBJETIVO = 0.4;
-    static final double PESO_QUANTIDADE_DIAS = 0.3;
-    static final double PESO_MOEDA = 0.2;
+    static final double PESO_OBJETIVO = 0.3;
+    static final double PESO_QUANTIDADE_DIAS = 0.2;
+    static final double PESO_MOEDA = 0.1;
     static final double PESO_PAIS = 0.1;
 
     static final int VALOR_MAXIMO_OBJETIVO = 9;
-    static final int VALOR_MAXIMO_QUANTIDADE_DIAS = 4;
+    static final int VALOR_MAXIMO_QUANTIDADE_DIAS = 9;
 
     static final double[][] MATRIZ_CATEGORIAS = {
         /*Impressão 3D*/{1, 0.4, 0.4, 0.8, 0.8, 0.6, 0.3, 0.8, 0.9, 0.3, 0.4, 0.1, 0, 0.3, 0.3, 0.4},
@@ -77,7 +77,7 @@ public class SistemaRBC_KS {
     Projeto projeto1;
     Projeto projeto2;
 
-    public double calculaSimilaridadeFilmes(Projeto projeto1, Projeto projeto2) {
+    public double calculaSimilaridadeProjetos(Projeto projeto1, Projeto projeto2) {
         this.projeto1 = projeto1;
         this.projeto2 = projeto2;
 
@@ -138,8 +138,18 @@ public class SistemaRBC_KS {
             return 2;
         } else if (quantidade_dias <= 60) {
             return 3;
-        } else if (quantidade_dias > 60) {
+        } else if (quantidade_dias <= 90) {
             return 4;
+        } else if (quantidade_dias <= 120) {
+            return 5;
+        } else if (quantidade_dias <= 150) {
+            return 6;
+        } else if (quantidade_dias <= 180) {
+            return 7;
+        } else if (quantidade_dias <= 210) {
+            return 8;
+        } else if (quantidade_dias > 210) {
+            return 9;
         }
 
         return 0;

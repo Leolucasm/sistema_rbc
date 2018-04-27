@@ -108,35 +108,35 @@ public class Projeto {
         String categoria_projeto = this.getCategoria().toLowerCase();
 
         switch (categoria_projeto) {
-            case "3d printing":
-                return 0;
-            case "apps":
+            case "impressora 3d":
+                return 0;            
+            case "aplicativos":
                 return 1;
-            case "camera equipment":
+            case "equipamentos de câmera":
                 return 2;
-            case "diy electronics":
+            case "eletrônicos (faça você mesmo)":
                 return 3;
-            case "fabrication tools":
+            case "ferramentas de fabricação":
                 return 4;
-            case "flight":
+            case "voos":
                 return 5;
             case "gadgets":
                 return 6;
             case "hardware":
                 return 7;
-            case "makerspaces":
+            case "espaço maker":
                 return 8;
-            case "robots":
+            case "robótica":
                 return 9;
             case "software":
                 return 10;
-            case "sound":
+            case "música":
                 return 11;
-            case "space exploration":
+            case "exploração espacial":
                 return 12;
-            case "technology":
+            case "tecnologia":
                 return 13;
-            case "wearables":
+            case "usáveis":
                 return 14;
             case "web":
                 return 15;

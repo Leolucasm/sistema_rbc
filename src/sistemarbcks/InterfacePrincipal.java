@@ -1,6 +1,8 @@
 package sistemarbcks;
 
 import gerenciadordebancodedados.Gerenciador;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -41,11 +43,16 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         aux  = gerenciador.getPaises();
         for(int i = 0;i<aux.size();i++){
             jComboPais.addItem(aux.get(i));
-        }                
+        }            
+        
+        //Defini data final
+        Date dataFim = new Date();        
+        dataFim.setMonth(dataFim.getMonth() + 1);
+        dataFim.setYear(dataFim.getYear() + 2);
         
         jTextNomeProjeto.setText("Projeto Teste");
         jTextDataInicio.setValue(new Date());
-        jTextDataFim.setValue(new Date());
+        jTextDataFim.setValue(dataFim);
         jTextObjetivo.setValue(8000.00);
         jComboCategoria.setSelectedIndex(1);
         jComboPais.setSelectedIndex(21);
@@ -116,15 +123,15 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextNomeProjeto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboCategoria = new javax.swing.JComboBox<>();
+        jComboCategoria = new javax.swing.JComboBox<String>();
         jLabel4 = new javax.swing.JLabel();
         jTextDataInicio = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         jTextDataFim = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboMoeda = new javax.swing.JComboBox<>();
+        jComboMoeda = new javax.swing.JComboBox<String>();
         jLabel6 = new javax.swing.JLabel();
-        jComboPais = new javax.swing.JComboBox<>();
+        jComboPais = new javax.swing.JComboBox<String>();
         jTextObjetivo = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -144,7 +151,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
 
         jLabel3.setText("Categoria");
 
-        jComboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboCategoria.setSelectedIndex(1);
         jComboCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,11 +169,11 @@ public class InterfacePrincipal extends javax.swing.JFrame {
 
         jLabel5.setText("Moeda");
 
-        jComboMoeda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboMoeda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("País");
 
-        jComboPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboPais.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jTextObjetivo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
 
@@ -272,15 +279,15 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             int i=0;            
             for (Projeto projeto:todosProjetos) {
                 tabelaSimilaridade[i][0] = projeto.getNome();                
-                tabelaSimilaridade[i][1] = projeto.getValor_arrecadado();
-                tabelaSimilaridade[i][2] = projeto.getApoiadores();
+                tabelaSimilaridade[i][1] = formatoNumerico(projeto.getValor_arrecadado());
+                tabelaSimilaridade[i][2] = formatoNumerico(projeto.getApoiadores());
                 tabelaSimilaridade[i][3] = projeto.getStatus();
                 tabelaSimilaridade[i][4] = projeto.getCategoria();
-                tabelaSimilaridade[i][5] = projeto.getDiasDuracao();
+                tabelaSimilaridade[i][5] = formatoNumerico(projeto.getDiasDuracao());
                 tabelaSimilaridade[i][6] = gerenciador.getNomeMoeda(projeto.getMoeda());
                 tabelaSimilaridade[i][7] = gerenciador.getNomePais(projeto.getPais());                
-                tabelaSimilaridade[i][8] = projeto.getObjetivo();                
-                tabelaSimilaridade[i][9] = rbc_KS.calculaSimilaridadeFilmes(projeto, novoProjeto);                
+                tabelaSimilaridade[i][8] = formatoNumerico(projeto.getObjetivo());                
+                tabelaSimilaridade[i][9] = formatoNumerico(rbc_KS.calculaSimilaridadeProjetos(projeto, novoProjeto));                
                 i++;
             }                                                
 
@@ -293,6 +300,13 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonCompararActionPerformed
 
+    private String formatoNumerico(double valor) {
+        NumberFormat formato = NumberFormat.getInstance();
+        formato.setMinimumFractionDigits(2);
+        formato.setMaximumFractionDigits(2);
+        return formato.format(valor);
+    }        
+    
     private void jComboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboCategoriaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboCategoriaActionPerformed

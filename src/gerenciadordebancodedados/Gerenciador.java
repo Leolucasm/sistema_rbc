@@ -71,7 +71,7 @@ public class Gerenciador {
 		
         try {            
 //            rs = stm.executeQuery("select * from projetos");
-            rs = stm.executeQuery("select * from projetos where nome = 'DogTags'");
+            rs = stm.executeQuery("select * from projetos where nome like '%Our future%'");
         } catch (SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,7 +111,7 @@ public class Gerenciador {
         
         categorias.add("Impressoras 3D");
         categorias.add("Aplicativos");
-        categorias.add("Equipamentos de Camera");
+        categorias.add("Equipamentos de Câmera");
         categorias.add("Eletrônicos (faça você mesmo)");
         categorias.add("Ferramentas de Fabricação");
         categorias.add("Voos");
