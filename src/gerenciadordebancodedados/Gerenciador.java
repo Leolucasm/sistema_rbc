@@ -70,8 +70,8 @@ public class Gerenciador {
         conexao();
 		
         try {            
-//            rs = stm.executeQuery("select * from projetos");
-            rs = stm.executeQuery("select * from projetos where nome like '%Our future%'");
+            rs = stm.executeQuery("select * from projetos");
+//            rs = stm.executeQuery("select * from projetos where nome like '%Our future%'");
         } catch (SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }

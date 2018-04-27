@@ -1,0 +1,5 @@
+Para utilização do projeto:
+
+1) Restaurar no PG admin o backup que está neste repositório (Projetos.backup)
+2) Executar o script ajusta_bd.sql para compatilizar os registros.
+3) Abrir a classe Gerenciador.java para definir os parâmetros de conexão ao banco de dados.
