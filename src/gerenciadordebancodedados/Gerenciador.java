@@ -14,9 +14,9 @@ import sistemarbcks.Pais;
 import sistemarbcks.Projeto;
 
 public class Gerenciador {
-    public final String url = "jdbc:postgresql://localhost:5432/rbc_projetos";  
+    public final String url = "jdbc:postgresql://localhost:5432/projetos";  
     public final String usuario = "postgres";  
-    public final String senha = "12345";
+    public final String senha = "123456";
 	
     public Connection con;
     public Statement stm;
@@ -70,8 +70,8 @@ public class Gerenciador {
         conexao();
 		
         try {            
-            rs = stm.executeQuery("select * from projetos");
-//            rs = stm.executeQuery("select * from projetos where nome = 'DogTags'");
+//            rs = stm.executeQuery("select * from projetos");
+            rs = stm.executeQuery("select * from projetos where nome = 'DogTags'");
         } catch (SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }
