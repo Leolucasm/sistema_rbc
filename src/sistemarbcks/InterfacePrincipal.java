@@ -21,7 +21,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     
     final void inicializaValores(){
         ArrayList<String> aux;
-        
+                
         //Categorias
         jComboCategoria.removeAllItems();
         aux  = gerenciador.getCategorias();
@@ -42,6 +42,13 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         for(int i = 0;i<aux.size();i++){
             jComboPais.addItem(aux.get(i));
         }                
+        
+        jTextNomeProjeto.setText("Projeto Teste");
+        jTextDataInicio.setValue(new Date());
+        jTextDataFim.setValue(new Date());
+        jTextObjetivo.setValue(8000.00);
+        jComboCategoria.setSelectedIndex(1);
+        jComboPais.setSelectedIndex(21);
     }
     
     private double getValorDouble(String valor){
@@ -94,6 +101,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         novoProjeto.setFim_projeto((Date) jTextDataFim.getValue());
         novoProjeto.setMoeda(sigla_moeda);
         novoProjeto.setPais(sigla_pais);                
+        novoProjeto.calculaDiferencaDias();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,9 +140,17 @@ public class InterfacePrincipal extends javax.swing.JFrame {
 
         jLabel1.setText("Nome do Projeto");
 
+        jTextNomeProjeto.setToolTipText("");
+
         jLabel3.setText("Categoria");
 
         jComboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboCategoria.setSelectedIndex(1);
+        jComboCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboCategoriaActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Data Início");
 
@@ -246,42 +262,40 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private void jButtonCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompararActionPerformed
         if(valida_campos()){        
             SistemaRBC_KS rbc_KS = new SistemaRBC_KS();
+            getAtributosProjeto();                
             ArrayList<Projeto> todosProjetos = gerenciador.getProjetos();
-            Object tabelaSimilaridade[][] = new Object[todosProjetos.size()][2];
+            Object tabelaSimilaridade[][] = new Object[todosProjetos.size()][10];
             String[] colunas = {"Nome do Projeto", "Valor Arrecadado (USD)", "Apoiadores", 
                 "Status", "Categoria", "Tempo (Dias)", "Moeda", "País", 
-                "Objetivo (USD)", "Similaridade com " + novoProjeto.getNome()};
-            getAtributosProjeto();                
+                "Objetivo (USD)", "Similaridade com " + novoProjeto.getNome()};            
                        
             int i=0;            
             for (Projeto projeto:todosProjetos) {
-                tabelaSimilaridade[i][0] = projeto.getNome();
-                tabelaSimilaridade[i][1] = projeto.getUsd_valor_arrecadado();
+                tabelaSimilaridade[i][0] = projeto.getNome();                
+                tabelaSimilaridade[i][1] = projeto.getValor_arrecadado();
                 tabelaSimilaridade[i][2] = projeto.getApoiadores();
                 tabelaSimilaridade[i][3] = projeto.getStatus();
                 tabelaSimilaridade[i][4] = projeto.getCategoria();
-                tabelaSimilaridade[i][5] = projeto.getDiferencaDias();
+                tabelaSimilaridade[i][5] = projeto.getDiasDuracao();
                 tabelaSimilaridade[i][6] = gerenciador.getNomeMoeda(projeto.getMoeda());
-                tabelaSimilaridade[i][7] = gerenciador.getNomePais(projeto.getPais());
-                tabelaSimilaridade[i][8] = projeto.getUsd_objetivo();
-                tabelaSimilaridade[i][9] = rbc_KS.calculaSimilaridadeFilmes(novoProjeto, projeto);                
+                tabelaSimilaridade[i][7] = gerenciador.getNomePais(projeto.getPais());                
+                tabelaSimilaridade[i][8] = projeto.getObjetivo();                
+                tabelaSimilaridade[i][9] = rbc_KS.calculaSimilaridadeFilmes(projeto, novoProjeto);                
                 i++;
-            }                        
-            
-            /*for (int i  = 0; i < todosProjetos.size(); i++){
-                tabelaSimilaridade[i][0] = todosProjetos.get(i).getNome();
-                tabelaSimilaridade[i][1] = rbc_KS.calculaSimilaridadeFilmes(novoProjeto, todosProjetos.get(i));
-            }*/
+            }                                                
 
-            DefaultTableModel tabela  = new DefaultTableModel(tabelaSimilaridade, colunas);
-
+            DefaultTableModel tabela  = new DefaultTableModel(tabelaSimilaridade, colunas);            
             TabelaSimilaridades similaridades = new TabelaSimilaridades();
-            similaridades.setTabela(tabela);
+            similaridades.setTabela(tabela);            
             similaridades.setVisible(true);        
         } else {
             JOptionPane.showMessageDialog(this, "Os campos devem estar preenchidos corretamente. \n Por favor verifique!", "Campos Inválidos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonCompararActionPerformed
+
+    private void jComboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboCategoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboCategoriaActionPerformed
 
     /**
      * @param args the command line arguments

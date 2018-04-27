@@ -69,8 +69,9 @@ public class Gerenciador {
         
         conexao();
 		
-        try {
+        try {            
             rs = stm.executeQuery("select * from projetos");
+//            rs = stm.executeQuery("select * from projetos where nome = 'DogTags'");
         } catch (SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,33 +80,18 @@ public class Gerenciador {
             while(rs.next()){
                 Projeto projeto = new Projeto();
                 
-                /*projeto.setId(0);
-                projeto.setNome("");
-                projeto.setCategoria("");
-                projeto.setMoeda("");
-                projeto.setInicio_projeto(inicio_projeto);
-                projeto.setFim_projeto(fim_projeto);
-                projeto.setObjetivo(0);
-                projeto.setValor_arrecadado(0);
-                projeto.setUsd_objetivo(0);
-                projeto.setUsd_valor_arrecadado(0);
-                projeto.setStatus("");
-                projeto.setApoiadores(0);
-                projeto.setPais("");                
-                
-                projetos.add(projeto);
-                */
-                /* ADICIONAR PROJETOS
-                projetos.add(new Projeto(
-                        rs.getString("titulo"), 
-                        //set generos é feito depois
-                        rs.getInt("id_duracao"), 
-                        rs.getInt("id_imdb"), 
-                        rs.getInt("id_ano_lancamento"), 
-                        rs.getInt("id_inspiracao"), 
-                        rs.getInt("id_nacionalidade"))
-                );
-                */                                
+                projeto.setId(rs.getInt("id"));
+                projeto.setNome(rs.getString("nome"));
+                projeto.setCategoria(rs.getString("categoria"));
+                projeto.setMoeda(rs.getString("moeda"));                
+                projeto.setStatus(rs.getString("status"));
+                projeto.setApoiadores(rs.getInt("apoiadores"));
+                projeto.setPais(rs.getString("pais"));        
+                projeto.setValor_arrecadado(rs.getDouble("arrecadado"));                                
+                projeto.setObjetivo(rs.getDouble("objetivo"));                          
+                projeto.setDiasDuracao(rs.getInt("dias"));
+                projeto.setAno_projeto(rs.getInt("ano"));                                                
+                projetos.add(projeto);                                            
             }
         } catch (SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);

@@ -7,15 +7,17 @@ public class Projeto {
     private String nome;
     private String categoria;
     private String moeda;
-    private Date inicio_projeto;
-    private Date fim_projeto;
-    private double objetivo;
-    private double valor_arrecadado;
-    private double usd_objetivo;
-    private double usd_valor_arrecadado;
     private String status;
     private int apoiadores;
     private String pais;
+    private double valor_arrecadado;
+    private double objetivo;
+    
+    private Date inicio_projeto;
+    private Date fim_projeto;
+    private int dias_duracao;
+    private int ano_projeto;
+    
 
     public int getId() {
         return id;
@@ -55,6 +57,7 @@ public class Projeto {
 
     public void setInicio_projeto(Date inicio_projeto) {
         this.inicio_projeto = inicio_projeto;
+        this.setAno_projeto(inicio_projeto.getYear());
     }
 
     public Date getFim_projeto() {
@@ -80,23 +83,7 @@ public class Projeto {
     public void setValor_arrecadado(double valor_arrecadado) {
         this.valor_arrecadado = valor_arrecadado;
     }
-
-    public double getUsd_objetivo() {
-        return usd_objetivo;
-    }
-
-    public void setUsd_objetivo(double usd_objetivo) {
-        this.usd_objetivo = usd_objetivo;
-    }
-
-    public double getUsd_valor_arrecadado() {
-        return usd_valor_arrecadado;
-    }
-
-    public void setUsd_valor_arrecadado(double usd_valor_arrecadado) {
-        this.usd_valor_arrecadado = usd_valor_arrecadado;
-    }
-
+    
     public String getStatus() {
         return status;
     }
@@ -254,8 +241,24 @@ public class Projeto {
         this.pais = pais;
     }
     
-    public long getDiferencaDias(){
-        return (this.getFim_projeto().getTime() - this.getInicio_projeto().getTime()) / (1000 * 60 * 60 * 24);
-    }    
+    public void calculaDiferencaDias(){
+        this.setDiasDuracao((int) ((this.getFim_projeto().getTime() - this.getInicio_projeto().getTime()) / (1000 * 60 * 60 * 24)));
+    }        
+
+    public int getAno_projeto() {
+        return ano_projeto;
+    }
+
+    public void setAno_projeto(int ano_projeto) {
+        this.ano_projeto = ano_projeto;
+    }
+
+    public void setDiasDuracao(int dias_duracao) {
+        this.dias_duracao = dias_duracao;
+    }
+
+    public int getDiasDuracao() {
+        return dias_duracao;
+    }                
 
 }
