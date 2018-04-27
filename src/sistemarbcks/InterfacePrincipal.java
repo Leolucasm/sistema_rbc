@@ -272,22 +272,21 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             getAtributosProjeto();                
             ArrayList<Projeto> todosProjetos = gerenciador.getProjetos();
             Object tabelaSimilaridade[][] = new Object[todosProjetos.size()][10];
-            String[] colunas = {"Nome do Projeto", "Valor Arrecadado (USD)", "Apoiadores", 
-                "Status", "Categoria", "Tempo (Dias)", "Moeda", "País", 
-                "Objetivo (USD)", "Similaridade com " + novoProjeto.getNome()};            
+            String[] colunas = {"Nome do Projeto", "Categoria", "Tempo (Dias)", "Moeda", "País", 
+                "Objetivo (USD)", "Valor Arrecadado (USD)", "Apoiadores", "Status", "Similaridade com " + novoProjeto.getNome()};
                        
             int i=0;            
             for (Projeto projeto:todosProjetos) {
-                tabelaSimilaridade[i][0] = projeto.getNome();                
-                tabelaSimilaridade[i][1] = formatoNumerico(projeto.getValor_arrecadado());
-                tabelaSimilaridade[i][2] = formatoNumerico(projeto.getApoiadores());
-                tabelaSimilaridade[i][3] = projeto.getStatus();
-                tabelaSimilaridade[i][4] = projeto.getCategoria();
-                tabelaSimilaridade[i][5] = formatoNumerico(projeto.getDiasDuracao());
-                tabelaSimilaridade[i][6] = gerenciador.getNomeMoeda(projeto.getMoeda());
-                tabelaSimilaridade[i][7] = gerenciador.getNomePais(projeto.getPais());                
-                tabelaSimilaridade[i][8] = formatoNumerico(projeto.getObjetivo());                
-                tabelaSimilaridade[i][9] = formatoNumerico(rbc_KS.calculaSimilaridadeProjetos(projeto, novoProjeto));                
+                tabelaSimilaridade[i][0] = projeto.getNome();                                                                
+                tabelaSimilaridade[i][1] = projeto.getCategoria();
+                tabelaSimilaridade[i][2] = formatoNumerico(projeto.getDiasDuracao(), 0, 0);
+                tabelaSimilaridade[i][3] = gerenciador.getNomeMoeda(projeto.getMoeda());
+                tabelaSimilaridade[i][4] = gerenciador.getNomePais(projeto.getPais());                
+                tabelaSimilaridade[i][5] = formatoNumerico(projeto.getObjetivo(), 2, 4);                
+                tabelaSimilaridade[i][6] = formatoNumerico(projeto.getValor_arrecadado(), 2, 4);
+                tabelaSimilaridade[i][7] = formatoNumerico(projeto.getApoiadores(), 0, 0);
+                tabelaSimilaridade[i][8] = projeto.getStatus();
+                tabelaSimilaridade[i][9] = formatoNumerico(rbc_KS.calculaSimilaridadeProjetos(projeto, novoProjeto), 8, 8);                
                 i++;
             }                                                
 
@@ -300,10 +299,10 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonCompararActionPerformed
 
-    private String formatoNumerico(double valor) {
+    private String formatoNumerico(double valor, int casas_decimais_min, int casas_decimais_max) {
         NumberFormat formato = NumberFormat.getInstance();
-        formato.setMinimumFractionDigits(2);
-        formato.setMaximumFractionDigits(2);
+        formato.setMinimumFractionDigits(casas_decimais_min);
+        formato.setMaximumFractionDigits(casas_decimais_max);
         return formato.format(valor);
     }        
     
