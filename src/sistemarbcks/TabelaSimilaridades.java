@@ -1,8 +1,13 @@
 package sistemarbcks;
 
+import java.awt.List;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Comparator;
+import java.util.LinkedList;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -20,9 +25,21 @@ public class TabelaSimilaridades extends javax.swing.JFrame {
     public void setTabela(DefaultTableModel tabela){
         jTable1.setModel(tabela);
         
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable1.getModel());
-        sorter.setComparator(9, comparator);        
-        jTable1.setRowSorter(sorter);        
+        RowSorter.SortKey similaridade = new RowSorter.SortKey(9, SortOrder.DESCENDING);
+        RowSorter.SortKey status = new RowSorter.SortKey(8, SortOrder.DESCENDING);
+        
+        // Ordenar por similaridade - do maior ou menor e segunda ordenacao por status sucesso.
+        LinkedList<RowSorter.SortKey> keys = new LinkedList();
+        keys.add(similaridade);
+        keys.add(status);
+
+        TableRowSorter t = new TableRowSorter(jTable1.getModel());
+        t.setMaxSortKeys(2);
+        t.setSortKeys(keys);
+        t.setComparator(9, comparator);
+        t.sort();
+        jTable1.setRowSorter(t);
+       
     }
     
     private Double formatoDouble (String valor) throws ParseException {
